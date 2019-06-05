@@ -1,0 +1,1 @@
+find CLOVER/ -name '.*' -exec rm  {} \;大括号与\之间有空格 
