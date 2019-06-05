@@ -1,0 +1,31 @@
+初始化一个Git仓库，使用git init命令。
+$ mkdir learngit
+$ cd learngit
+$ git init
+添加文件到Git仓库，分两步：
+使用命令git add <file>，注意，可反复多次使用，添加多个文件；
+使用命令git commit -m <message>，完成。
+git log --pretty=oneline 命令可以显示所有提交过的版本信息
+git reflog 可以查看所有分支的所有操作记录(包括已经被删除的commit记录和reset的操作)
+git reset --hard HEAD~1/HEAD~100/HEAD^/HEAD^^
+
+工作去文件--->git add提交到暂存区--->git commit提交到(master)分子
+git status查看stage及branch状态信息。
+
+克隆远程库
+git clone git@github.com:yongxinyouth/keynotes.git
+git clone https://github.com/yongxinyouth/keynotes.git
+
+使用命令git remote add origin git@server-name:path/repo-name.git关联远程库；
+使用命令git push -u origin master第一次推送master分支的所有内容；
+此后，每次本地提交后，只要有必要，就可以使用命令git push origin master推送最新修改；
+
+git remote rm origin (远程库名从origin改为github)
+--> git remote add github git@github.com:yongxinyouth/keynotes.git
+--> git push github master:推送master分支到远程库
+
+全局身份配置
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
+
