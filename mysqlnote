@@ -1,0 +1,25 @@
+show variables like 'character_set%';查看当前mysql字符字符集
+set character_set_server=utf8;设置字符集为utf8
+show full columns from fanhaoku.indextable;查看表列的详细信息
+
+SELECT * FROM <表名> WHERE <条件表达式>
+SELECT * FROM students WHERE score >= 80 AND/OR gender = 'M';
+SELECT * FROM students WHERE NOT class_id = 2;
+SELECT * FROM students WHERE (score < 80 OR score > 90) AND gender = 'M';
+WHERE score >= 60 AND score <= 90 WHERE score BETWEEN 60 AND 90
+WHERE score LIKE '%a%'
+
+SELECT 列1 别名1, 列2 别名2, 列3 别名3 FROM ...
+SELECT id, score points, name FROM students;
+
+SELECT id, name, gender, score FROM students ORDER BY score DESC;
+SELECT id, name, gender, score FROM students ORDER BY score ASC, gender;
+
+按条件查询(where)后再排序(order by)
+SELECT * FROM students WHERE class_id = 2 ORDER BY score ASC, gender;
+select name, count(*) files from class group by name order by files;
+
+分页查询，每页(limit)条记录，从第(offset)条开始查询。记录默认0号起始
+SELECT id, name FROM students ORDER BY score DESC LIMIT 3 OFFSET 3;
+
+
