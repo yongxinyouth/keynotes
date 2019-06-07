@@ -1,6 +1,6 @@
 show variables like 'character_set%';查看当前mysql字符字符集
 set character_set_server=utf8;设置字符集为utf8
-show full columns from fanhaoku.indextable;查看表列的详细信息
+show full columns from fanhaoku.indextable; DESC nyfh;查看表列的详细信息
 
 SELECT * FROM <表名> WHERE <条件表达式>
 SELECT * FROM students WHERE score >= 80 AND/OR gender = 'M';
@@ -18,8 +18,105 @@ SELECT id, name, gender, score FROM students ORDER BY score ASC, gender;
 按条件查询(where)后再排序(order by)
 SELECT * FROM students WHERE class_id = 2 ORDER BY score ASC, gender;
 select name, count(*) files from class group by name order by files;
+select name,count(name) films from nyfh group by name order by films;
 
 分页查询，每页(limit)条记录，从第(offset)条开始查询。记录默认0号起始
 SELECT id, name FROM students ORDER BY score DESC LIMIT 3 OFFSET 3;
 
+聚合查询
+SELECT COUNT(*) num FROM students;
+SELECT COUNT(id) num FROM students;
+SELECT COUNT(*) boys FROM students WHERE gender = 'M';
+SELECT AVG/SUM/MAX/MIN(score) average FROM students WHERE gender = 'M';
+SELECT CEILING/FLOOR(COUNT(*) / 3) FROM students; not with alias
+select CEILING(count(name)/3) pages from indextable; with alias
 
+分组查询
+SELECT COUNT(*) num FROM students WHERE class_id = 1;
+SELECT COUNT(*) num FROM students WHERE class_id = 2;
+上面2句可以用1句group by分组查询语句解决
+SELECT class_id, COUNT(*) num FROM students GROUP BY class_id;
+SELECT class_id, gender, COUNT(*) num FROM students GROUP BY class_id, gender;
+注意:聚合查询的列中，只能放入分组的列
+SELECT class_id,avg(score) average FROM students GROUP BY class_id;
+SELECT class_id,gender,avg(score) average FROM students GROUP BY class_id,gender
+
+从派生出的新表(别名为newtable)中继续查找
+select sum(films) num from (select name, count(name) films from nyfh group by name order by films ASC) as newtable;
+不需要as也可以
+select sum(films) num from (select name, count(name) films from nyfh group by name order by films ASC)  newtable;
+
+
+多表联合查找；多表查询时，要使用表名.列名这样的方式来引用列和设置别名，这样就避免了结果集的列名重复问题。
+select 
+	newtable.name as name, 
+	newtable.films as films, 
+	indextable.url as url 
+from (select name, count(name) as films from nyfh group by name order by films) as newtable, indextable 
+where newtable.name=indextable.name 
+order by films;
+
+SELECT :set alias for tables name and columns name
+    s.id sid,
+    s.name,
+    s.gender,
+    s.score,
+    c.id cid,
+    c.name cname
+FROM students s, classes c;
+
+连接查询
+tableA inner join tableB ON ... A n B
+tableA full outer join tableB ON ... A u B
+tableA left outer join tableB ON ... A u (A n B)
+tableA right outer join tableB ON ... (A n B) u B
+SELECT ... FROM <表1> INNER JOIN <表2> ON <条件...>
+
+select 
+	A.name as name, 
+	B.url as url, 
+	A.films as films 
+from (select name,count(name) as films from nyfh group by name) as A 
+inner join indextable as B 
+on A.name=B.name
+where films>46 and films<75
+order by films;
+
+修改数据
+INSERT INTO <表名> (字段1, 字段2, ...) VALUES (值1, 值2, ...);
+INSERT INTO students (class_id, name, gender, score) VALUES (2, '大牛', 'M', 80);
+INSERT INTO students (class_id, name, gender, score) VALUES
+  	(1, '大宝', 'M', 87),
+  	(2, '二宝', 'M', 81)...;
+UPDATE <表名> SET 字段1=值1, 字段2=值2, ... WHERE ...;
+UPDATE students SET name='大牛', score=66 WHERE id=1;
+UPDATE students SET score=score+10 WHERE score<80;
+UPDATE students SET score=60;没有where条件时默认整个表的记录都会被更新
+DELETE FROM <表名> WHERE ...;
+DELETE FROM students WHERE id=1;
+DELETE FROM students WHERE id>=5 AND id<=7;
+DELETE FROM students;没有where条件时默认整个表的记录都会被删除
+
+管理MYSQL
+database manage:
+	show databases;
+	create database test;
+	drop database test;
+	use test;
+table manage:
+	show tables;
+	DESC test; show full columns from test;
+	drop table test;
+	alter table test add column birth varchar(10) not null;
+	alter table test change column birth birthday varchar(20) not null;
+	alter table test dorp column birthday;
+	create table if not exists students (
+     		id bigint(10) not null auto_increment,
+     		class_id bigint(10) not null,
+ 		name varchar(255) not null,
+  		gender varchar(1) not null,
+  		score int(11) not null,
+ 		 birthday date not null,
+		primary key (id)
+  		) engine=innodb default charset=utf8;
+	show create table students; show sql scripts for creating table students;
