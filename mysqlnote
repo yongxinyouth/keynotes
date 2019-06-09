@@ -1,6 +1,6 @@
 show variables like 'character_set%';查看当前mysql字符字符集
 set character_set_server=utf8;设置字符集为utf8
-show full columns from fanhaoku.indextable; DESC nyfh;查看表列的详细信息
+show full columns from fanhaoku.indextable; == DESC nyfh;查看表列的详细信息
 
 SELECT * FROM <表名> WHERE <条件表达式>
 SELECT * FROM students WHERE score >= 80 AND/OR gender = 'M';
@@ -72,7 +72,7 @@ tableA left outer join tableB ON ... A u (A n B)
 tableA right outer join tableB ON ... (A n B) u B
 SELECT ... FROM <表1> INNER JOIN <表2> ON <条件...>
 
-select 
+select distinct
 	A.name as name, 
 	B.url as url, 
 	A.films as films 

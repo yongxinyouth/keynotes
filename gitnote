@@ -36,4 +36,12 @@ git remote rm origin (远程库名从origin改为github)
 git config --global user.email "you@example.com"
 git config --global user.name "Your Name"
 
+创建与合并分支
+git checkout -b dev :创建并把HEAD切换到dev分支
+1.git branch dev :创建分支
+2.git checkout dev :切换到dev分支
+git branch :查看当前分支
+
+git merge dev
+git branch -d dev
 
