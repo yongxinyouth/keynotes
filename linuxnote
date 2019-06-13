@@ -1,1 +1,2 @@
-find CLOVER/ -name '.*' -exec rm  {} \;大括号与\之间有空格 
+find CLOVER/ -name '.*' -exec rm  {} \;大括号与\之间有空格
+efibootmgr -c -w -L "CLOVER" -d /dev/nvme0n1 -p1 -l \\EFI\\CLOVER\\CLOVERX64.efi 
